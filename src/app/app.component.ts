@@ -3,6 +3,177 @@ import { Chart, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+const VALUES = [
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 00:00:00',
+    endtime: '2021-08-31 01:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 01:00:00',
+    endtime: '2021-08-31 02:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 02:00:00',
+    endtime: '2021-08-31 03:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 03:00:00',
+    endtime: '2021-08-31 04:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 04:00:00',
+    endtime: '2021-08-31 05:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 05:00:00',
+    endtime: '2021-08-31 06:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 06:00:00',
+    endtime: '2021-08-31 07:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 07:00:00',
+    endtime: '2021-08-31 08:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 08:00:00',
+    endtime: '2021-08-31 09:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 09:00:00',
+    endtime: '2021-08-31 10:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 10:00:00',
+    endtime: '2021-08-31 11:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 11:00:00',
+    endtime: '2021-08-31 12:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 12:00:00',
+    endtime: '2021-08-31 13:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 13:00:00',
+    endtime: '2021-08-31 14:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 14:00:00',
+    endtime: '2021-08-31 15:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 15:00:00',
+    endtime: '2021-08-31 16:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 16:00:00',
+    endtime: '2021-08-31 17:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 17:00:00',
+    endtime: '2021-08-31 18:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 18:00:00',
+    endtime: '2021-08-31 19:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 19:00:00',
+    endtime: '2021-08-31 20:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 20:00:00',
+    endtime: '2021-08-31 21:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 21:00:00',
+    endtime: '2021-08-31 22:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 22:00:00',
+    endtime: '2021-08-31 23:00:00'
+  },
+  {
+    more: 1,
+    less: 1,
+    target: 1,
+    starttime: '2021-08-31 23:00:00',
+    endtime: '2021-09-01 00:00:00'
+  }
+];
+
 @Component({
   selector: 'my-app',
   templateUrl: './app.component.html',
@@ -12,6 +183,22 @@ export class AppComponent {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [ChartDataLabels];
+
+  private allValues = VALUES.map(a => {
+    a.target = this.getRandomInt(0, 30);
+    a.less = this.getRandomInt(0, 30);
+    a.more = this.getRandomInt(0, 30);
+    return a;
+  });
+
+  public randomize() {
+    this.allValues = VALUES.map(a => {
+      a.target = this.getRandomInt(0, 30);
+      a.less = this.getRandomInt(0, 30);
+      a.more = this.getRandomInt(0, 30);
+      return a;
+    });
+  }
 
   public barChartOptions: ChartOptions = {
     scales: { x: { stacked: true } },
@@ -52,18 +239,40 @@ export class AppComponent {
     }
   };
 
-  public barChartLabels: Label[] = [
-    `08:00 - 09:00`,
-    `09:00 - 10:00`,
-    `11:00 - 12:00`,
-    `12:00 - 13:00`,
-    `14:00 - 15:00`,
-    `16:00 - 17:00`
-  ];
+  private getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  private getLabels(data: any[]): string[] {
+    return data.map(
+      d =>
+        `${d.starttime
+          .toString()
+          .substring(11, 16)} - ${d.endtime.toString().substring(11, 16)}`
+    );
+  }
+
+  private getTargets(data: any[]): number[] {
+    return data.map(d => d.target);
+  }
+
+  private getMore(tagets: number[], data: any[]): [number, number][] {
+    return data.map((d, i) => [tagets[i] + d.more, tagets[i]]);
+  }
+
+  private getLess(tagets: number[], data: any[]): [number, number][] {
+    return data.map((d, i) => [tagets[i] - d.less, tagets[i]]);
+  }
+
+  public barChartLabels: Label[] = this.getLabels(this.allValues);
+
+  // data: [3, 4, 4, 6, 8, 3],
+  // data: [[11, 3], [6, 4], [7, 4], [9, 6], [9, 8], [5, 3]],
+  // data: [[1, 3], [0, 4], [3, 4], [1, 6], [3, 8], [3, 3]],
 
   public barChartData = [
     {
-      data: [3, 4, 4, 6, 8, 3],
+      data: this.getTargets(this.allValues),
       type: 'line',
       label: 'Target',
       backgroundColor: 'black',
@@ -79,8 +288,8 @@ export class AppComponent {
       }
     },
     {
+      data: this.getMore(this.getTargets(this.allValues), this.allValues),
       label: 'More',
-      data: [[11, 3], [6, 4], [7, 4], [9, 6], [9, 8], [5, 3]],
       backgroundColor: '#36a2eb',
       borderColor: '#36a2eb',
       hoverBackgroundColor: '#36a2eb',
@@ -91,8 +300,8 @@ export class AppComponent {
       }
     },
     {
+      data: this.getLess(this.getTargets(this.allValues), this.allValues),
       label: 'Less',
-      data: [[1, 3], [0, 4], [3, 4], [1, 6], [3, 8], [3, 3]],
       backgroundColor: '#ff6384',
       borderColor: '#ff6384',
       hoverBackgroundColor: '#ff6384',
