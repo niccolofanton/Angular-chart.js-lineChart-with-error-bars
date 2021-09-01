@@ -40,10 +40,10 @@ export class AppComponent {
       data: this.targets,
       type: 'line',
       label: 'Target',
-      backgroundColor: 'black',
-      borderColor: 'black',
-      hoverBackgroundColor: 'black',
-      hoverBorderColor: 'black',
+      backgroundColor: '#102027',
+      borderColor: '#102027',
+      hoverBackgroundColor: '#102027',
+      hoverBorderColor: '#102027',
       borderDash: [5, 5],
       pointRadius: 10,
       pointHoverRadius: 12,
@@ -186,54 +186,19 @@ export class AppComponent {
   private entityMoreValues = this.entityMoreLessValues.more;
   public entityBarChartData = [
     {
+      order: 3,
       data: this.entityTargets,
-      type: 'line',
       label: 'Target',
-      backgroundColor: 'black',
-      borderColor: 'black',
-      hoverBackgroundColor: 'black',
-      hoverBorderColor: 'black',
-      // borderDash: [5, 5],
+      backgroundColor: '#102027',
+      borderColor: '#102027',
+      hoverBackgroundColor: '#102027',
+      hoverBorderColor: '#102027',
+      barThickness: 36,
+      borderRadius: 5,
       pointRadius: 10,
       pointHoverRadius: 12,
       pointHitRadius: 20,
-      // tension: 0.45
-      showLine: false
-    },
-    {
-      data: this.entityMoreValues,
-      label: 'More',
-      backgroundColor: '#36a2eb',
-      borderColor: '#36a2eb',
-      hoverBackgroundColor: '#36a2eb',
-      hoverBorderColor: '#36a2eb',
-      barThickness: 30,
-      borderRadius: 5,
-      borderSkipped: context => {
-        const values = this.entityLessValues[context.dataIndex];
-
-        if (!values) {
-          return false;
-        }
-
-        const value = Math.abs(values[0] - values[1]);
-
-        if (value === 0) {
-          return false;
-        }
-
-        return 'bottom';
-      }
-    },
-    {
-      data: this.entityLessValues,
-      label: 'Less',
-      backgroundColor: '#ff6384',
-      borderColor: '#ff6384',
-      hoverBackgroundColor: '#ff6384',
-      hoverBorderColor: '#ff6384',
-      barThickness: 30,
-      borderRadius: 5,
+      showLine: false,
       borderSkipped: context => {
         const values = this.entityMoreValues[context.dataIndex];
 
@@ -248,7 +213,37 @@ export class AppComponent {
         }
 
         return 'top';
+      },
+      datalabels: {
+        anchor: 'start',
+        offset: 10,
+        align: 'bottom',
+        color: '#102027'
       }
+    },
+    {
+      order: 2,
+      data: this.entityMoreValues,
+      label: 'More',
+      backgroundColor: '#36a2eb',
+      borderColor: '#36a2eb',
+      hoverBackgroundColor: '#36a2eb',
+      hoverBorderColor: '#36a2eb',
+      barThickness: 36,
+      borderRadius: 5,
+      borderSkipped: 'bottom'
+    },
+    {
+      order: 1,
+      data: this.entityLessValues,
+      label: 'Less',
+      backgroundColor: '#ff6384',
+      borderColor: '#ff6384',
+      hoverBackgroundColor: '#ff6384',
+      hoverBorderColor: '#ff6384',
+      barThickness: 30,
+      borderRadius: 5,
+      borderSkipped: 'top'
     }
   ];
   public entityBarChartOptions: ChartOptions = {
@@ -261,7 +256,7 @@ export class AppComponent {
     },
     scales: {
       x: { stacked: true },
-      y: { offset: true, beginAtZero: false, grid: { display: false } }
+      y: { offset: true, grid: { display: false } }
     },
     responsive: true,
     interaction: {
@@ -269,9 +264,10 @@ export class AppComponent {
       mode: 'index'
     },
     plugins: {
-      legend: { position: 'top' },
+      legend: { position: 'top', reverse: true },
       tooltip: {
         usePointStyle: true,
+        itemSort: (a, b) => a.datasetIndex - b.datasetIndex,
         callbacks: {
           label: model => {
             if (model.datasetIndex === 0) {
@@ -312,12 +308,12 @@ export class AppComponent {
           return `${sign}${_value}`;
         },
         anchor: context =>
-          this.switchDatasets(context, ['center', 'end', 'start']),
+          this.switchDatasets(context, ['center', 'end', 'start'], 1),
         align: context =>
-          this.switchDatasets(context, ['center', 'end', 'start']),
+          this.switchDatasets(context, ['center', 'end', 'start'], 1),
         color: context =>
-          this.switchDatasets(context, ['white', '#36a2eb', '#ff6384']),
-        offset: context => this.switchDatasets(context, [0, 10, 10])
+          this.switchDatasets(context, ['white', '#36a2eb', '#ff6384'], 1),
+        offset: context => this.switchDatasets(context, [0, 10, 10], 1)
       }
     }
   };
@@ -378,11 +374,15 @@ export class AppComponent {
     return data.map((d, i) => [tagets[i] - d.less, tagets[i]]);
   }
 
-  private switchDatasets<T>(context, valuesToReturn: [T, T, T]) {
+  private switchDatasets<T>(
+    context,
+    valuesToReturn: [T, T, T],
+    min: number = 3
+  ) {
     const values = context.dataset.data[context.dataIndex];
     const value = Math.abs(values[0] - values[1]);
 
-    if (context.datasetIndex === 0 || value > 3) {
+    if (context.datasetIndex === 0 || value > min) {
       return valuesToReturn[0];
     }
 
