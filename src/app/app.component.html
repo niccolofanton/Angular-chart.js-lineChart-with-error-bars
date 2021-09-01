@@ -2,6 +2,7 @@
   Randomize
 </button> -->
 
-<canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+<canvas baseChart [datasets]="entity ? entityBarChartData :  barChartData"
+  [labels]="entity ? entityBarChartLabels:  barChartLabels" [options]="entity ? entityBarChartOptions : barChartOptions"
   [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
 </canvas>
