@@ -2,177 +2,7 @@ import { Component } from '@angular/core';
 import { Chart, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-
-const VALUES = [
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 00:00:00',
-    endtime: '2021-08-31 01:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 01:00:00',
-    endtime: '2021-08-31 02:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 02:00:00',
-    endtime: '2021-08-31 03:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 03:00:00',
-    endtime: '2021-08-31 04:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 04:00:00',
-    endtime: '2021-08-31 05:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 05:00:00',
-    endtime: '2021-08-31 06:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 06:00:00',
-    endtime: '2021-08-31 07:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 07:00:00',
-    endtime: '2021-08-31 08:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 08:00:00',
-    endtime: '2021-08-31 09:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 09:00:00',
-    endtime: '2021-08-31 10:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 10:00:00',
-    endtime: '2021-08-31 11:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 11:00:00',
-    endtime: '2021-08-31 12:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 12:00:00',
-    endtime: '2021-08-31 13:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 13:00:00',
-    endtime: '2021-08-31 14:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 14:00:00',
-    endtime: '2021-08-31 15:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 15:00:00',
-    endtime: '2021-08-31 16:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 16:00:00',
-    endtime: '2021-08-31 17:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 17:00:00',
-    endtime: '2021-08-31 18:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 18:00:00',
-    endtime: '2021-08-31 19:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 19:00:00',
-    endtime: '2021-08-31 20:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 20:00:00',
-    endtime: '2021-08-31 21:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 21:00:00',
-    endtime: '2021-08-31 22:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 22:00:00',
-    endtime: '2021-08-31 23:00:00'
-  },
-  {
-    more: 1,
-    less: 1,
-    target: 1,
-    starttime: '2021-08-31 23:00:00',
-    endtime: '2021-09-01 00:00:00'
-  }
-];
+import * as perlin from 'perlin-noise';
 
 @Component({
   selector: 'my-app',
@@ -180,32 +10,57 @@ const VALUES = [
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  public allValues = perlin.generatePerlinNoise(5, 5).map(a => {
+    const value = Math.floor(a * 100);
+    return {
+      target: value,
+      less: this.getRandomInt(0, 10),
+      more: this.getRandomInt(0, 10),
+      starttime: '2021-08-31 00:00:00',
+      endtime: '2021-09-01 00:00:00'
+    };
+  });
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [ChartDataLabels];
 
-  private allValues = VALUES.map(a => {
-    a.target = this.getRandomInt(0, 30);
-    a.less = this.getRandomInt(0, 30);
-    a.more = this.getRandomInt(0, 30);
-    return a;
-  });
+  private targets = this.getTargets(this.allValues);
+  private lessValues = this.getLess(
+    this.getTargets(this.allValues),
+    this.allValues
+  );
+  private moreValues = this.getMore(
+    this.getTargets(this.allValues),
+    this.allValues
+  );
 
-  public randomize() {
-    this.allValues = VALUES.map(a => {
-      a.target = this.getRandomInt(0, 30);
-      a.less = this.getRandomInt(0, 30);
-      a.more = this.getRandomInt(0, 30);
-      return a;
-    });
+  private switchDatasets<T>(context, valuesToReturn: [T, T, T]) {
+    const values = context.dataset.data[context.dataIndex];
+    const value = Math.abs(values[0] - values[1]);
+
+    if (context.datasetIndex === 0 || value > 3) {
+      return valuesToReturn[0];
+    }
+
+    switch (context.datasetIndex) {
+      case 1:
+        return valuesToReturn[1];
+      case 2:
+        return valuesToReturn[2];
+    }
   }
 
   public barChartOptions: ChartOptions = {
     scales: { x: { stacked: true } },
     responsive: true,
+    interaction: {
+      intersect: false,
+      mode: 'index'
+    },
     plugins: {
       legend: { position: 'top' },
       tooltip: {
+        usePointStyle: true,
         callbacks: {
           label: model => {
             if (model.datasetIndex === 0) {
@@ -217,12 +72,22 @@ export class AppComponent {
             const values = data[index];
             const value = Math.abs(values[0] - values[1]);
 
+            if (model.datasetIndex === 1) {
+              const target = this.targets[index];
+
+              return `${model.dataset.label} ${value} ( total: ${target +
+                value} )`;
+            }
+
             return `${model.dataset.label} ${value}`;
           }
         }
       },
       datalabels: {
-        // labels: this.labelsOption,
+        font: {
+          weight: 'bold',
+          size: 14
+        },
         formatter: function(value, context) {
           if (context.datasetIndex === 0) {
             return `${value}`;
@@ -234,10 +99,23 @@ export class AppComponent {
             return ``;
           }
           return `${sign}${_value}`;
-        }
+        },
+        anchor: context =>
+          this.switchDatasets(context, ['center', 'end', 'start']),
+        align: context =>
+          this.switchDatasets(context, ['center', 'end', 'start']),
+        color: context =>
+          this.switchDatasets(context, ['white', '#36a2eb', '#ff6384']),
+        offset: context => this.switchDatasets(context, [0, 10, 10])
       }
     }
   };
+
+  constructor() {}
+
+  ngOnInit() {
+    Chart.defaults.font.family = 'Roboto, "Helvetica Neue", Arial, sans-serif';
+  }
 
   private getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -266,13 +144,9 @@ export class AppComponent {
 
   public barChartLabels: Label[] = this.getLabels(this.allValues);
 
-  // data: [3, 4, 4, 6, 8, 3],
-  // data: [[11, 3], [6, 4], [7, 4], [9, 6], [9, 8], [5, 3]],
-  // data: [[1, 3], [0, 4], [3, 4], [1, 6], [3, 8], [3, 3]],
-
   public barChartData = [
     {
-      data: this.getTargets(this.allValues),
+      data: this.targets,
       type: 'line',
       label: 'Target',
       backgroundColor: 'black',
@@ -283,39 +157,57 @@ export class AppComponent {
       pointRadius: 10,
       pointHoverRadius: 12,
       pointHitRadius: 20,
-      datalabels: {
-        color: 'white'
-      }
+      tension: 0.45
     },
     {
-      data: this.getMore(this.getTargets(this.allValues), this.allValues),
+      data: this.moreValues,
       label: 'More',
       backgroundColor: '#36a2eb',
       borderColor: '#36a2eb',
       hoverBackgroundColor: '#36a2eb',
       hoverBorderColor: '#36a2eb',
       barThickness: 30,
-      datalabels: {
-        color: 'white'
+      borderRadius: 5,
+      borderSkipped: context => {
+        const values = this.lessValues[context.dataIndex];
+
+        if (!values) {
+          return false;
+        }
+
+        const value = Math.abs(values[0] - values[1]);
+
+        if (value === 0) {
+          return false;
+        }
+
+        return 'bottom';
       }
     },
     {
-      data: this.getLess(this.getTargets(this.allValues), this.allValues),
+      data: this.lessValues,
       label: 'Less',
       backgroundColor: '#ff6384',
       borderColor: '#ff6384',
       hoverBackgroundColor: '#ff6384',
       hoverBorderColor: '#ff6384',
       barThickness: 30,
-      datalabels: {
-        color: 'white'
+      borderRadius: 5,
+      borderSkipped: context => {
+        const values = this.moreValues[context.dataIndex];
+
+        if (!values) {
+          return false;
+        }
+
+        const value = Math.abs(values[0] - values[1]);
+
+        if (value === 0) {
+          return false;
+        }
+
+        return 'top';
       }
     }
   ];
-
-  constructor() {}
-
-  ngOnInit() {
-    Chart.defaults.font.family = 'Roboto, "Helvetica Neue", Arial, sans-serif';
-  }
 }
